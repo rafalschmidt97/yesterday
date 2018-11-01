@@ -1,5 +1,6 @@
 ﻿using Api.Core.AutomaticDI;
 using Api.Core.Cors;
+using Api.Core.Mapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,7 @@ namespace Api
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddAutomaticDI();
+      services.AddMapper();
       services.AddCustomCors();
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
     }
