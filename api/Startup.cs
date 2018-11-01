@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Api.Core.Cors;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +18,7 @@ namespace Api
 
     public void ConfigureServices(IServiceCollection services)
     {
+      services.AddCustomCors();
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
     }
 
@@ -24,14 +26,10 @@ namespace Api
     {
       if (env.IsDevelopment())
       {
-        app.UseDeveloperExceptionPage();
-      }
-      else
-      {
-        app.UseHsts();
+        
       }
 
-      app.UseHttpsRedirection();
+      app.UseCustomCors();
       app.UseMvc();
     }
   }
