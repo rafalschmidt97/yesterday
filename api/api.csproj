@@ -12,6 +12,9 @@
     <PackageReference Include="Scrutor">
       <Version>3.0.1</Version>
     </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore">
+      <Version>3.0.0</Version>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
