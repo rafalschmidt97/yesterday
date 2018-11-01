@@ -6,6 +6,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Scrutor">
+      <Version>3.0.1</Version>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

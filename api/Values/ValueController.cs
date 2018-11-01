@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Controllers
+namespace Api.Values
 {
   [Route("api/[controller]")]
   [ApiController]
-  public class ValuesController : ControllerBase
+  public class ValueController : ControllerBase
   {
     // GET api/values
     [HttpGet]
