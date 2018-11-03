@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Api.Accounts.Profiles;
 
 namespace Api.Accounts
 {
@@ -14,7 +15,7 @@ namespace Api.Accounts
     [Required]
     public string Password { get; set; }
     
-    [ForeignKey("AccountId")]
     public ICollection<AccountRole> AccountRoles { get; set; }
+    public Profile Profile { get; set; }
   }
 }

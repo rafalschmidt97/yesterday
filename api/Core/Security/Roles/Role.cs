@@ -12,7 +12,6 @@ namespace Api.Core.Security.Roles
     [Required]
     public string Name { get; set; }
     
-    [ForeignKey("RoleId")]
     public ICollection<AccountRole> AccountRoles { get; set; }
   }
 }
