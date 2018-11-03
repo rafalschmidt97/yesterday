@@ -1,6 +1,8 @@
 ﻿using Api.Core.AutomaticDI;
 using Api.Core.Cors;
+using Api.Core.Database;
 using Api.Core.Mapper;
+using Api.Core.Security;
 using Api.Core.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,11 +23,13 @@ namespace Api
 
     public void ConfigureServices(IServiceCollection services)
     {
+      services.AddDatabase(configuration);
       services.AddAutomaticDI();
       services.AddMapper();
-      services.AddCustomSwagger();
       services.AddCustomCors();
-      services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+      services.AddCustomSwagger();
+      services.AddSecurity(configuration);
+      services.AddSecureMvc();
     }
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -36,6 +40,7 @@ namespace Api
       }
 
       app.UseCustomCors();
+      app.UseSecurity();
       app.UseMvc();
     }
   }
