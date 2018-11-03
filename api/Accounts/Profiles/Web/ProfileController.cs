@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Security.Claims;
-using Api.Accounts.Web;
 using Api.Core.Security.Roles;
 using Api.Core.Security.Web;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Accounts.Profiles.Web
