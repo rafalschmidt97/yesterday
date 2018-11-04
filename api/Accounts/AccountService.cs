@@ -58,8 +58,8 @@ namespace Api.Accounts
       
       account.Password = HashPassword(account.Password);
 
-      db.Add(account);
-      db.Add(new AccountRole
+      db.Accounts.Add(account);
+      db.AccountRoles.Add(new AccountRole
       {
         AccountId = account.Id,
         RoleId = userRole.Id

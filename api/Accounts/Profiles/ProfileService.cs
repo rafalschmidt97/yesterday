@@ -30,7 +30,7 @@ namespace Api.Accounts.Profiles
 
       profile.AccountId = accountId;
 
-      db.Add(profile);
+      db.Profiles.Add(profile);
       db.SaveChanges();
 
       return true;

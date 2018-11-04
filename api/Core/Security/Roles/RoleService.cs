@@ -36,7 +36,7 @@ namespace Api.Core.Security.Roles
         return false;
       }
 
-      db.Add(role);
+      db.Roles.Add(role);
       db.SaveChanges();
 
       return true;
