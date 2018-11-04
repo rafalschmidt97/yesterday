@@ -9,9 +9,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Accounts.Web
 {
-  [Route("accounts"), ApiController]
+  [Route(RouteUrl), ApiController]
   public class AccountController : ControllerBase
   {
+    public const string RouteUrlId = "{id}";
+    public const string RouteUrlSelf = "self";
+    private const string RouteUrl = "accounts";
+    private const string RouteUrlIdPassword = "{id}/password";
+    private const string RouteUrlSelfPassword = "self/password";
+
     private readonly AccountService accountService;
     private readonly IMapper mapper;
 
@@ -21,7 +27,7 @@ namespace Api.Accounts.Web
       this.mapper = mapper;
     }
 
-    [HttpGet("{id}")]
+    [HttpGet(RouteUrlId)]
     [AuthorizeRole(RoleConstants.Admin)]
     public ActionResult<AccountResponse> GetById(int id)
     {
@@ -35,7 +41,7 @@ namespace Api.Accounts.Web
       return mapper.Map<AccountResponse>(account);
     }
 
-    [HttpGet("self")]
+    [HttpGet(RouteUrlSelf)]
     public ActionResult<AccountResponse> GetSelf()
     {
       var accountId = Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value);
@@ -65,7 +71,7 @@ namespace Api.Accounts.Web
       return NoContent();
     }
 
-    [HttpPut("{id}")]
+    [HttpPut(RouteUrlId)]
     [AuthorizeRole(RoleConstants.Admin)]
     public IActionResult Update(int id, AccountRequest accountRequest)
     {
@@ -80,7 +86,7 @@ namespace Api.Accounts.Web
       return NoContent();
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete(RouteUrlId)]
     [AuthorizeRole(RoleConstants.Admin)]
     public IActionResult Delete(int id)
     {
@@ -94,14 +100,14 @@ namespace Api.Accounts.Web
       return NoContent();
     }
     
-    [HttpDelete("self")]
+    [HttpDelete(RouteUrlSelf)]
     public IActionResult DeleteSelf()
     {
       var accountId = Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value);
       return Delete(accountId);
     }
     
-    [HttpPatch("{id}/password")]
+    [HttpPatch(RouteUrlIdPassword)]
     [AuthorizeRole(RoleConstants.Admin)]
     public IActionResult ChangePasswordById(int id, ChangePasswordRequest request)
     {
@@ -115,7 +121,7 @@ namespace Api.Accounts.Web
       return NoContent();
     }
     
-    [HttpPatch("self/password")]
+    [HttpPatch(RouteUrlSelfPassword)]
     public IActionResult ChangePasswordSelf(ChangePasswordRequest request)
     {
       var accountId = Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value);

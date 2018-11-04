@@ -3,13 +3,16 @@ using Api.Core.Security.Roles;
 using Api.Core.Security.Web;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using static Api.Accounts.Web.AccountController;
 
 namespace api.Core.Security.Roles.Web
 {
-  [Route("roles"), ApiController]
+  [Route(RouteUrl), ApiController]
   [AuthorizeRole(RoleConstants.Admin)]
   public class RoleController : ControllerBase
   {
+    private const string RouteUrl = "roles";
+
     private readonly RoleService roleService;
     private readonly IMapper mapper;
 
@@ -19,7 +22,7 @@ namespace api.Core.Security.Roles.Web
       this.mapper = mapper;
     }
 
-    [HttpGet("{id}")]
+    [HttpGet(RouteUrlId)]
     public ActionResult<RoleResponse> GetById(int id)
     {
       var role = roleService.GetById(id);
@@ -53,7 +56,7 @@ namespace api.Core.Security.Roles.Web
       return NoContent();
     }
 
-    [HttpPut("{id}")]
+    [HttpPut(RouteUrlId)]
     public IActionResult Update(int id, RoleRequest roleRequest)
     {
       var role = mapper.Map<Role>(roleRequest);
@@ -67,7 +70,7 @@ namespace api.Core.Security.Roles.Web
       return NoContent();
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete(RouteUrlId)]
     public IActionResult Delete(int id)
     {
       var isDeleted = roleService.Delete(id);

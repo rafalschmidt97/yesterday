@@ -10,9 +10,10 @@ using Swashbuckle.AspNetCore.Filters;
 // http://dotnetdetail.net/how-to-upload-file-using-angular-6-and-asp-net-core-2-1-web-api/
 namespace Api.Core.Storage
 {
-  [Route("uploads"), ApiController]
+  [Route(RouteUrl), ApiController]
   public class StorageController : ControllerBase
   {
+    private const string RouteUrl = "uploads";
     private readonly string[] acceptedFileTypes = {".jpg", ".jpeg", ".png"};
     private readonly IHostingEnvironment host;
 

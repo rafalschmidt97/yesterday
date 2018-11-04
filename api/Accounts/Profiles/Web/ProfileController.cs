@@ -7,9 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Accounts.Profiles.Web
 {
-  [Route("accounts"), ApiController]
+  [Route(RouteUrl), ApiController]
   public class ProfileController : ControllerBase
   {
+    private const string RouteUrl = "accounts";
+    private const string RouteUrlId = "{id}/profile";
+    private const string RouteUrlSelf = "self/profile";
+    
     private readonly ProfileService profileService;
     private readonly IMapper mapper;
 
@@ -19,7 +23,7 @@ namespace Api.Accounts.Profiles.Web
       this.mapper = mapper;
     }
 
-    [HttpGet("{id}/profile")]
+    [HttpGet(RouteUrlId)]
     [AuthorizeRole(RoleConstants.Admin)]
     public ActionResult<ProfileResponse> GetByAccountId(int id)
     {
@@ -33,14 +37,14 @@ namespace Api.Accounts.Profiles.Web
       return mapper.Map<ProfileResponse>(profile);
     }
 
-    [HttpGet("self/profile")]
+    [HttpGet(RouteUrlSelf)]
     public ActionResult<ProfileResponse> GetSelf()
     {
       var accountId = Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value);
       return GetByAccountId(accountId);
     }
 
-    [HttpPost("{id}/profile")]
+    [HttpPost(RouteUrlId)]
     [AuthorizeRole(RoleConstants.Admin)]
     public IActionResult Add(int id, ProfileRequest profileRequest)
     {
@@ -55,14 +59,14 @@ namespace Api.Accounts.Profiles.Web
       return NoContent();
     }
     
-    [HttpPost("self/profile")]
+    [HttpPost(RouteUrlSelf)]
     public IActionResult AddBySelf(ProfileRequest profileRequest)
     {
       var accountId = Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value);
       return Add(accountId, profileRequest);
     }
 
-    [HttpPut("{id}/profile")]
+    [HttpPut(RouteUrlId)]
     [AuthorizeRole(RoleConstants.Admin)]
     public IActionResult Update(int id, ProfileRequest profileRequest)
     {
@@ -77,7 +81,7 @@ namespace Api.Accounts.Profiles.Web
       return NoContent();
     }
     
-    [HttpPut("self/profile")]
+    [HttpPut(RouteUrlSelf)]
     public IActionResult UpdateBySelf(ProfileRequest profileRequest)
     {
       var accountId = Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value);

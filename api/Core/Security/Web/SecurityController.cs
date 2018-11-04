@@ -3,9 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Core.Security.Web
 {
-  [Route("auth"), ApiController]
+  [Route(RouteUrl), ApiController]
   public class SecurityController : ControllerBase
   {
+    private const string RouteUrl = "auth";
     private readonly SecurityService securityService;
 
     public SecurityController(SecurityService securityService)
