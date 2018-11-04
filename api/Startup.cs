@@ -38,6 +38,7 @@ namespace Api
         app.UseCustomSwagger();
       }
 
+      app.UseStaticFiles();
       app.UseCustomCors();
       app.UseSecurity();
       app.UseMvc();
