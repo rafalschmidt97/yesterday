@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Api.Accounts.Posts;
 using Api.Accounts.Profiles;
 
 namespace Api.Accounts
@@ -16,5 +17,6 @@ namespace Api.Accounts
     
     public ICollection<AccountRole> AccountRoles { get; set; }
     public Profile Profile { get; set; }
+    public ICollection<Post> Posts { get; set; }
   }
 }
