@@ -52,6 +52,7 @@ namespace Api.Accounts.Posts.Reactions
 
       reaction.AccountId = accountId;
       reaction.PostId = postId;
+      reaction.Reacted = DateTime.Now;
 
       db.Reactions.Add(reaction);
       db.SaveChanges();

@@ -5,6 +5,5 @@ namespace Api.Accounts.Posts.Reactions
     Liked,
     Seen,
     Loved
-//    Commented,
   }
 }

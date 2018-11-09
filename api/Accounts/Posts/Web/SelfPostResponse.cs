@@ -10,5 +10,6 @@ namespace Api.Accounts.Posts.Web
     public string Content { get; set; }
     public string Photo { get; set; }
     public ICollection<Reaction> Reactions { get; set; }
+    public ICollection<Comment> Comments { get; set; }
   }
 }

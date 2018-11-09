@@ -1,5 +1,6 @@
 using Api.Accounts;
 using Api.Accounts.Posts;
+using Api.Accounts.Posts.Comments;
 using Api.Accounts.Posts.Reactions;
 using Api.Accounts.Profiles;
 using Api.Core.Security.Roles;
@@ -35,5 +36,6 @@ namespace Api.Core.Database
     public DbSet<Profile> Profiles { get; set; }
     public DbSet<Post> Posts { get; set; }
     public DbSet<Reaction> Reactions { get; set; }
+    public DbSet<Comment> Comments { get; set; }
   }
 }

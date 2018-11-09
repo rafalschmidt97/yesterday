@@ -7,47 +7,46 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using static Api.Accounts.Web.AccountController;
 
-namespace Api.Accounts.Posts.Reactions.Web
-
+namespace Api.Accounts.Posts.Comments.Web
 {
   [Route(RouteUrl), ApiController]
-  public class ReactionController : ControllerBase
+  public class CommentController : ControllerBase
   {
-    private const string RouteUrl = "posts/{postId}/reactions";
+    private const string RouteUrl = "posts/{postId}/comments";
     
-    private readonly ReactionService reactionService;
+    private readonly CommentService commentService;
     private readonly IMapper mapper;
 
-    public ReactionController(ReactionService reactionService, IMapper mapper)
+    public CommentController(CommentService commentService, IMapper mapper)
     {
-      this.reactionService = reactionService;
+      this.commentService = commentService;
       this.mapper = mapper;
     }
     
     [HttpGet(RouteUrlId)]
     [AuthorizeRole(RoleConstants.Admin)]
-    public ActionResult<ReactionRequest> GetById(int id)
+    public ActionResult<CommentRequest> GetById(int id)
     {
-      var reaction = reactionService.GetById(id);
+      var comment = commentService.GetById(id);
 
-      if (reaction == null)
+      if (comment == null)
       {
         return NotFound();
       }
 
-      return mapper.Map<ReactionRequest>(reaction);
+      return mapper.Map<CommentRequest>(comment);
     }
     
     [HttpGet]
     [AuthorizeRole(RoleConstants.Admin)]
-    public ActionResult<IList<ReactionRequest>> GetAll(int postId)
+    public ActionResult<IList<CommentRequest>> GetAll(int postId)
     {
-      var reactions = reactionService.GetByPostId(postId);
-      return Ok(mapper.Map<IList<ReactionRequest>>(reactions));
+      var comments = commentService.GetByPostId(postId);
+      return Ok(mapper.Map<IList<CommentRequest>>(comments));
     }
     
     [HttpPost]
-    public IActionResult Add(int accountId, int postId, ReactionRequest reactionRequest)
+    public IActionResult Add(int accountId, int postId, CommentRequest commentRequest)
     {
       var isAdmin = User.IsInRole(RoleConstants.Admin);
 
@@ -68,8 +67,8 @@ namespace Api.Accounts.Posts.Reactions.Web
         accountId = Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value);
       }
 
-      var reaction = mapper.Map<Reaction>(reactionRequest);
-      var isCreated = reactionService.Add(accountId, postId, reaction);
+      var comment = mapper.Map<Comment>(commentRequest);
+      var isCreated = commentService.Add(accountId, postId, comment);
 
       if (!isCreated)
       {
@@ -101,7 +100,7 @@ namespace Api.Accounts.Posts.Reactions.Web
         accountId = Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value);
       }
       
-      var isDeleted = reactionService.Delete(id, accountId);
+      var isDeleted = commentService.Delete(id, accountId);
 
       if (!isDeleted)
       {

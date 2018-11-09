@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Api.Accounts.Posts.Reactions.Web
@@ -7,8 +6,5 @@ namespace Api.Accounts.Posts.Reactions.Web
   { 
     [Required]
     public Action? Action { get; set; }
-    
-    [Required]
-    public DateTime? Reacted { get; set; }
   }
 }

@@ -26,6 +26,9 @@ namespace Api.Accounts.Posts
         .Include(p => p.Reactions)
           .ThenInclude(r => r.Account)
             .ThenInclude(a => a.Profile)
+        .Include(p => p.Comments)
+          .ThenInclude(r => r.Account)
+            .ThenInclude(a => a.Profile)
         .FirstOrDefault(p => p.Id.Equals(id));
     }
     
@@ -33,6 +36,9 @@ namespace Api.Accounts.Posts
     {
       return db.Posts.Where(p => p.AccountId.Equals(id))
         .Include(p => p.Reactions)
+          .ThenInclude(r => r.Account)
+            .ThenInclude(a => a.Profile)
+        .Include(p => p.Comments)
           .ThenInclude(r => r.Account)
             .ThenInclude(a => a.Profile)
         .ToList();

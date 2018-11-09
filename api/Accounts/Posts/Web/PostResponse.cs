@@ -13,6 +13,7 @@ namespace Api.Accounts.Posts.Web
     public string Photo { get; set; }
     public Account Account { get; set; }
     public ICollection<Reaction> Reactions { get; set; }
+    public ICollection<Comment> Comments { get; set; }
   }
   
   public class Reaction
@@ -20,6 +21,14 @@ namespace Api.Accounts.Posts.Web
     public int Id { get; set; }
     public Action Action { get; set; }
     public DateTime Reacted { get; set; }
+    public Account Account { get; set; }
+  }
+  
+  public class Comment
+  {
+    public int Id { get; set; }
+    public string Content { get; set; }
+    public DateTime Created { get; set; }
     public Account Account { get; set; }
   }
 
