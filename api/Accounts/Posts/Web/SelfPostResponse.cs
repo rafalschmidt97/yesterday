@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Api.Accounts.Posts.Web
 {
@@ -8,5 +9,6 @@ namespace Api.Accounts.Posts.Web
     public DateTime Created { get; set; }
     public string Content { get; set; }
     public string Photo { get; set; }
+    public ICollection<Reaction> Reactions { get; set; }
   }
 }

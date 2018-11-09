@@ -95,6 +95,9 @@ namespace Api.Accounts
         return false;
       }
 
+      var reactionsToDelete = db.Reactions.Where(r => r.AccountId.Equals(id));
+      db.Reactions.RemoveRange(reactionsToDelete);
+      
       db.Accounts.Remove(account);
       db.SaveChanges();
 

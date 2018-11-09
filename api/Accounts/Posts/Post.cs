@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Api.Accounts.Posts.Reactions;
 
 namespace Api.Accounts.Posts
 {
@@ -14,7 +16,9 @@ namespace Api.Accounts.Posts
     public string Content { get; set; }
     
     public string Photo { get; set; }
-        
+    
+    public ICollection<Reaction> Reactions { get; set; }
+    
     public int AccountId { get; set; }
     public Account Account { get; set; }
   }

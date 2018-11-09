@@ -59,7 +59,7 @@ namespace Api.Accounts.Posts.Web
     }
 
     [HttpPost]
-    public IActionResult Add(int accountId, CreatePostRequest postRequest)
+    public IActionResult Add(int accountId, PostRequest postRequest)
     {
       var isAdmin = User.IsInRole(RoleConstants.Admin);
 
@@ -92,7 +92,7 @@ namespace Api.Accounts.Posts.Web
     }
 
     [HttpPut(RouteUrlId)]
-    public IActionResult Update(int id, int accountId, UpdatePostRequest postRequest)
+    public IActionResult Update(int id, int accountId, PostRequest postRequest)
     {
       var isAdmin = User.IsInRole(RoleConstants.Admin);
 

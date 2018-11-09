@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Api.Accounts.Posts.Web
 {
-  public class UpdatePostRequest
+  public class PostRequest
   {
     [Required(AllowEmptyStrings = false)]
     public string Content { get; set; }

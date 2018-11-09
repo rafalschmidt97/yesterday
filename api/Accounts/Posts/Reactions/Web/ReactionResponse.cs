@@ -1,28 +1,16 @@
 using System;
-using System.Collections.Generic;
 using Api.Accounts.Profiles;
-using Action = Api.Accounts.Posts.Reactions.Action;
 
-namespace Api.Accounts.Posts.Web
+namespace Api.Accounts.Posts.Reactions.Web
 {
-  public class PostResponse
-  {
-    public int Id { get; set; }
-    public DateTime Created { get; set; }
-    public string Content { get; set; }
-    public string Photo { get; set; }
-    public Account Account { get; set; }
-    public ICollection<Reaction> Reactions { get; set; }
-  }
-  
-  public class Reaction
+  public class ReactionResponse
   {
     public int Id { get; set; }
     public Action Action { get; set; }
     public DateTime Reacted { get; set; }
     public Account Account { get; set; }
   }
-
+  
   public class Account
   {
     public int Id { get; set; }

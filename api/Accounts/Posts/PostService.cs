@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Api.Core.AutomaticDI;
@@ -22,15 +23,21 @@ namespace Api.Accounts.Posts
       return db.Posts
         .Include(p => p.Account)
           .ThenInclude(a => a.Profile)
+        .Include(p => p.Reactions)
+          .ThenInclude(r => r.Account)
+            .ThenInclude(a => a.Profile)
         .FirstOrDefault(p => p.Id.Equals(id));
     }
     
     public IList<Post> GetByAccountId(int id)
     {
-      return db.Posts.Where(p => p.AccountId.Equals(id)).ToList();
+      return db.Posts.Where(p => p.AccountId.Equals(id))
+        .Include(p => p.Reactions)
+          .ThenInclude(r => r.Account)
+            .ThenInclude(a => a.Profile)
+        .ToList();
     }
    
-
     public bool Add(int accountId, Post post)
     {
       if (accountService.GetById(accountId) == null)
@@ -39,6 +46,7 @@ namespace Api.Accounts.Posts
       }
 
       post.AccountId = accountId;
+      post.Created = DateTime.Now;
 
       db.Posts.Add(post);
       db.SaveChanges();
