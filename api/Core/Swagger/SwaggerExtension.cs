@@ -38,14 +38,7 @@ namespace Api.Core.Swagger
 
     public static void UseCustomSwagger(this IApplicationBuilder app)
     {
-      app.UseSwagger(options =>
-      {
-        options.PreSerializeFilters.Add((document, request) =>
-        {
-          document.Paths =
-            document.Paths.ToDictionary(path => path.Key.ToLowerInvariant(), p => p.Value);
-        });
-      });
+      app.UseSwagger();
       app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "API"));
     }
   }
