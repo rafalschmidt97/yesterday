@@ -9,7 +9,7 @@ namespace Api.Accounts.Posts.Web
     public DateTime Created { get; set; }
     public string Content { get; set; }
     public string Photo { get; set; }
-    public ICollection<Reaction> Reactions { get; set; }
-    public ICollection<Comment> Comments { get; set; }
+    public ICollection<PostReaction> Reactions { get; set; }
+    public ICollection<PostComment> Comments { get; set; }
   }
 }

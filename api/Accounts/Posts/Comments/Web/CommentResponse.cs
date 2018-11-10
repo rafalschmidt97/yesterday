@@ -8,17 +8,17 @@ namespace Api.Accounts.Posts.Comments.Web
     public int Id { get; set; }
     public string Content { get; set; }
     public DateTime Created { get; set; }
-    public Account Account { get; set; }
+    public CommentAccount Account { get; set; }
   }
   
-  public class Account
+  public class CommentAccount
   {
     public int Id { get; set; }
     public string Username { get; set; }
-    public Profile Profile { get; set; }
+    public CommentProfile Profile { get; set; }
   }
   
-  public class Profile
+  public class CommentProfile
   {
     public string Firstname { get; set; }
     public string Lastname { get; set; }

@@ -21,7 +21,9 @@ namespace Api.Accounts
 
     public Account GetById(int id)
     {
-      return db.Accounts.FirstOrDefault(u => u.Id.Equals(id));
+      return db.Accounts
+        .Include(a => a.Profile)
+        .FirstOrDefault(u => u.Id.Equals(id));
     }
 
     public Account GetByUsername(string name)

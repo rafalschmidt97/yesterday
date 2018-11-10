@@ -8,17 +8,17 @@ namespace Api.Accounts.Posts.Reactions.Web
     public int Id { get; set; }
     public Action Action { get; set; }
     public DateTime Reacted { get; set; }
-    public Account Account { get; set; }
+    public ReactionAccount Account { get; set; }
   }
   
-  public class Account
+  public class ReactionAccount
   {
     public int Id { get; set; }
     public string Username { get; set; }
-    public Profile Profile { get; set; }
+    public ReactionProfile Profile { get; set; }
   }
   
-  public class Profile
+  public class ReactionProfile
   {
     public string Firstname { get; set; }
     public string Lastname { get; set; }

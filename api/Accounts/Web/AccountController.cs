@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using Api.Accounts.Follows;
 using Api.Core.Security.Roles;
 using Api.Core.Security.Web;
 using AutoMapper;
@@ -20,15 +21,16 @@ namespace Api.Accounts.Web
 
     private readonly AccountService accountService;
     private readonly IMapper mapper;
+    private readonly FollowService followService;
 
-    public AccountController(AccountService accountService, IMapper mapper)
+    public AccountController(AccountService accountService, IMapper mapper, FollowService followService)
     {
       this.accountService = accountService;
       this.mapper = mapper;
+      this.followService = followService;
     }
 
     [HttpGet(RouteUrlId)]
-    [AuthorizeRole(RoleConstants.Admin)]
     public ActionResult<AccountResponse> GetById(int id)
     {
       var account = accountService.GetById(id);
@@ -38,7 +40,10 @@ namespace Api.Accounts.Web
         return NotFound();
       }
 
-      return mapper.Map<AccountResponse>(account);
+      var accountResponse = mapper.Map<AccountResponse>(account);
+      accountResponse.Following = followService.GetFollowingCountByAccountId(id);
+      accountResponse.Followers = followService.GetFollowersCountByAccountId(id);
+      return accountResponse;
     }
 
     [HttpGet(RouteUrlSelf)]
