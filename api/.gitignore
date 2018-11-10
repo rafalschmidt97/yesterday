@@ -11,7 +11,7 @@
 
 _build/
 _site/
-Properties/
+#Properties/
 wwwroot/uploads
 
 # Use git add -f to force override .sln when required. Not needed in most cases.

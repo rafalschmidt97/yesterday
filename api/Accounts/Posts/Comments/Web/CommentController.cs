@@ -12,7 +12,11 @@ namespace Api.Accounts.Posts.Comments.Web
   [Route(RouteUrl), ApiController]
   public class CommentController : ControllerBase
   {
-    private const string RouteUrl = "posts/{postId}/comments";
+    private const string RouteUrl = "accounts";
+    private const string RouteUrlAccountIdPostId = "{accountId}/posts/{postId}/comments";
+    private const string RouteUrlAccountIdPostIdCommentId = "{accountId}/posts/{postId}/comments/{id}";
+    private const string RouteUrlSelfPostId = "self/posts/{postId}/comments";
+    private const string RouteUrlSelfPostIdCommentId = "self/posts/{postId}/comments/{id}";
     
     private readonly CommentService commentService;
     private readonly IMapper mapper;
@@ -23,50 +27,32 @@ namespace Api.Accounts.Posts.Comments.Web
       this.mapper = mapper;
     }
     
-    [HttpGet(RouteUrlId)]
+    [HttpGet(RouteUrlAccountIdPostIdCommentId)]
     [AuthorizeRole(RoleConstants.Admin)]
-    public ActionResult<CommentRequest> GetById(int id)
+    public ActionResult<CommentResponse> GetById(int id)
     {
-      var comment = commentService.GetById(id);
+      var comment = commentService.GetByIdWithProfile(id);
 
       if (comment == null)
       {
         return NotFound();
       }
 
-      return mapper.Map<CommentRequest>(comment);
+      return mapper.Map<CommentResponse>(comment);
     }
     
-    [HttpGet]
+    [HttpGet(RouteUrlAccountIdPostId)]
     [AuthorizeRole(RoleConstants.Admin)]
-    public ActionResult<IList<CommentRequest>> GetAll(int postId)
+    public ActionResult<IList<CommentResponse>> GetAll(int postId)
     {
-      var comments = commentService.GetByPostId(postId);
-      return Ok(mapper.Map<IList<CommentRequest>>(comments));
+      var comments = commentService.GetByPostIdWithProfile(postId);
+      return Ok(mapper.Map<IList<CommentResponse>>(comments));
     }
     
-    [HttpPost]
+    [HttpPost(RouteUrlAccountIdPostId)]
+    [AuthorizeRole(RoleConstants.Admin)]
     public IActionResult Add(int accountId, int postId, CommentRequest commentRequest)
     {
-      var isAdmin = User.IsInRole(RoleConstants.Admin);
-
-      if (isAdmin)
-      {
-        if (accountId == 0)
-        {
-          return BadRequest();
-        }
-      }
-      else
-      {
-        if (accountId != 0)
-        {
-          return Forbid();
-        }
-        
-        accountId = Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value);
-      }
-
       var comment = mapper.Map<Comment>(commentRequest);
       var isCreated = commentService.Add(accountId, postId, comment);
 
@@ -78,28 +64,17 @@ namespace Api.Accounts.Posts.Comments.Web
       return NoContent();
     }
     
-    [HttpDelete(RouteUrlId)]
+    [HttpPost(RouteUrlSelfPostId)]
+    public IActionResult AddBySelf(int postId, CommentRequest commentRequest)
+    {
+      var accountId = Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value);
+      return Add(accountId, postId, commentRequest);
+    }
+    
+    [HttpDelete(RouteUrlAccountIdPostIdCommentId)]
+    [AuthorizeRole(RoleConstants.Admin)]
     public IActionResult Delete(int id, int accountId)
     {
-      var isAdmin = User.IsInRole(RoleConstants.Admin);
-
-      if (isAdmin)
-      {
-        if (accountId == 0)
-        {
-          return BadRequest();
-        }
-      }
-      else
-      {
-        if (accountId != 0)
-        {
-          return Forbid();
-        }
-        
-        accountId = Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value);
-      }
-      
       var isDeleted = commentService.Delete(id, accountId);
 
       if (!isDeleted)
@@ -108,6 +83,14 @@ namespace Api.Accounts.Posts.Comments.Web
       }
 
       return NoContent();
+    }
+    
+    [HttpDelete(RouteUrlSelfPostIdCommentId)]
+    [AuthorizeRole(RoleConstants.Admin)]
+    public IActionResult DeleteBySelf(int id)
+    {
+      var accountId = Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value);
+      return Delete(id, accountId);
     }
   }
 }

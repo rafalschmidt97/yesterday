@@ -32,7 +32,7 @@ namespace Api.Accounts.Follows
     {
       return db.AccountFollows.Where(f => f.AccountId.Equals(id))
         .Include(f => f.Following)
-        .ThenInclude(a => a.Profile)
+          .ThenInclude(a => a.Profile)
         .ToList()
         .Select(f => f.Following) // select breaks joins so get everything and then select only following
         .ToList();
@@ -42,7 +42,7 @@ namespace Api.Accounts.Follows
     {
       return db.AccountFollows.Where(f => f.FollowingId.Equals(id))
         .Include(f => f.Account)
-        .ThenInclude(a => a.Profile)
+          .ThenInclude(a => a.Profile)
         .ToList()
         .Select(f => f.Account) // select breaks joins so get everything and then select only following
         .ToList();

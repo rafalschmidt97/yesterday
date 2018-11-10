@@ -12,8 +12,12 @@ namespace Api.Accounts.Posts.Reactions.Web
 {
   [Route(RouteUrl), ApiController]
   public class ReactionController : ControllerBase
-  {
-    private const string RouteUrl = "posts/{postId}/reactions";
+  {    
+    private const string RouteUrl = "accounts";
+    private const string RouteUrlAccountIdPostId = "{accountId}/posts/{postId}/reactions";
+    private const string RouteUrlAccountIdPostIdReactionId = "{accountId}/posts/{postId}/reactions/{id}";
+    private const string RouteUrlSelfPostId = "self/posts/{postId}/reactions";
+    private const string RouteUrlSelfPostIdReactionId = "self/posts/{postId}/reactions/{id}";
     
     private readonly ReactionService reactionService;
     private readonly IMapper mapper;
@@ -24,50 +28,32 @@ namespace Api.Accounts.Posts.Reactions.Web
       this.mapper = mapper;
     }
     
-    [HttpGet(RouteUrlId)]
+    [HttpGet(RouteUrlAccountIdPostIdReactionId)]
     [AuthorizeRole(RoleConstants.Admin)]
-    public ActionResult<ReactionRequest> GetById(int id)
+    public ActionResult<ReactionResponse> GetById(int id)
     {
-      var reaction = reactionService.GetById(id);
+      var reaction = reactionService.GetByIdWithProfile(id);
 
       if (reaction == null)
       {
         return NotFound();
       }
 
-      return mapper.Map<ReactionRequest>(reaction);
+      return mapper.Map<ReactionResponse>(reaction);
     }
     
-    [HttpGet]
+    [HttpGet(RouteUrlAccountIdPostId)]
     [AuthorizeRole(RoleConstants.Admin)]
-    public ActionResult<IList<ReactionRequest>> GetAll(int postId)
+    public ActionResult<IList<ReactionResponse>> GetAll(int postId)
     {
-      var reactions = reactionService.GetByPostId(postId);
-      return Ok(mapper.Map<IList<ReactionRequest>>(reactions));
+      var reactions = reactionService.GetByPostIdWithProfile(postId);
+      return Ok(mapper.Map<IList<ReactionResponse>>(reactions));
     }
     
-    [HttpPost]
+    [HttpPost(RouteUrlAccountIdPostId)]
+    [AuthorizeRole(RoleConstants.Admin)]
     public IActionResult Add(int accountId, int postId, ReactionRequest reactionRequest)
     {
-      var isAdmin = User.IsInRole(RoleConstants.Admin);
-
-      if (isAdmin)
-      {
-        if (accountId == 0)
-        {
-          return BadRequest();
-        }
-      }
-      else
-      {
-        if (accountId != 0)
-        {
-          return Forbid();
-        }
-        
-        accountId = Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value);
-      }
-
       var reaction = mapper.Map<Reaction>(reactionRequest);
       var isCreated = reactionService.Add(accountId, postId, reaction);
 
@@ -79,28 +65,17 @@ namespace Api.Accounts.Posts.Reactions.Web
       return NoContent();
     }
     
-    [HttpDelete(RouteUrlId)]
+    [HttpPost(RouteUrlSelfPostId)]
+    public IActionResult AddBySelf(int postId, ReactionRequest reactionRequest)
+    {
+      var accountId = Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value);
+      return Add(accountId, postId, reactionRequest);
+    }
+    
+    [HttpDelete(RouteUrlAccountIdPostIdReactionId)]
+    [AuthorizeRole(RoleConstants.Admin)]
     public IActionResult Delete(int id, int accountId)
     {
-      var isAdmin = User.IsInRole(RoleConstants.Admin);
-
-      if (isAdmin)
-      {
-        if (accountId == 0)
-        {
-          return BadRequest();
-        }
-      }
-      else
-      {
-        if (accountId != 0)
-        {
-          return Forbid();
-        }
-        
-        accountId = Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value);
-      }
-      
       var isDeleted = reactionService.Delete(id, accountId);
 
       if (!isDeleted)
@@ -109,6 +84,14 @@ namespace Api.Accounts.Posts.Reactions.Web
       }
 
       return NoContent();
+    }
+    
+    [HttpDelete(RouteUrlSelfPostIdReactionId)]
+    [AuthorizeRole(RoleConstants.Admin)]
+    public IActionResult DeleteBySelf(int id)
+    {
+      var accountId = Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value);
+      return Delete(id, accountId);
     }
   }
 }

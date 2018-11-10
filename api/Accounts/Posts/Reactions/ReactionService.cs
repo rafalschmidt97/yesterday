@@ -20,8 +20,13 @@ namespace Api.Accounts.Posts.Reactions
       this.accountService = accountService;
       this.postService = postService;
     }
-
+    
     public Reaction GetById(int id)
+    {
+      return db.Reactions.FirstOrDefault(r => r.Id.Equals(id));
+    }
+
+    public Reaction GetByIdWithProfile(int id)
     {
       return db.Reactions
         .Include(r => r.Account)
@@ -29,11 +34,11 @@ namespace Api.Accounts.Posts.Reactions
         .FirstOrDefault(r => r.Id.Equals(id));
     }
 
-    public IList<Reaction> GetByPostId(int id)
+    public IList<Reaction> GetByPostIdWithProfile(int id)
     {
       return db.Reactions.Where(r => r.PostId.Equals(id))
         .Include(r => r.Account)
-        .ThenInclude(a => a.Profile)
+          .ThenInclude(a => a.Profile)
         .ToList();
     }
 

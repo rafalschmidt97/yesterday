@@ -33,7 +33,8 @@ namespace Api.Accounts.Web
     [HttpGet(RouteUrlId)]
     public ActionResult<AccountResponse> GetById(int id)
     {
-      var account = accountService.GetById(id);
+      var isAdmin = User.IsInRole(RoleConstants.Admin);
+      var account = isAdmin ? accountService.GetByIdWithAllPosts(id) : accountService.GetByIdWithDayAgoPosts(id);
 
       if (account == null)
       {
@@ -50,15 +51,25 @@ namespace Api.Accounts.Web
     public ActionResult<AccountResponse> GetSelf()
     {
       var accountId = Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value);
-      return GetById(accountId);
+      var account = accountService.GetByIdWithAllPosts(accountId);
+
+      if (account == null)
+      {
+        return NotFound();
+      }
+
+      var accountResponse = mapper.Map<AccountResponse>(account);
+      accountResponse.Following = followService.GetFollowingCountByAccountId(accountId);
+      accountResponse.Followers = followService.GetFollowersCountByAccountId(accountId);
+      return accountResponse;
     }
 
     [HttpGet]
     [AuthorizeRole(RoleConstants.Admin)]
-    public ActionResult<IList<AccountResponse>> GetAll()
+    public ActionResult<IList<BasicAccountResponse>> GetAll()
     {
       var accounts = accountService.GetAll();
-      return Ok(mapper.Map<IList<AccountResponse>>(accounts));
+      return Ok(mapper.Map<IList<BasicAccountResponse>>(accounts));
     }
 
     [HttpPost]

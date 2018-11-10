@@ -22,13 +22,18 @@ namespace Api.Accounts.Posts.Comments
     
     public Comment GetById(int id)
     {
+      return db.Comments.FirstOrDefault(r => r.Id.Equals(id));
+    }
+    
+    public Comment GetByIdWithProfile(int id)
+    {
       return db.Comments
         .Include(r => r.Account)
-          .ThenInclude(a => a.Profile)
+        .ThenInclude(a => a.Profile)
         .FirstOrDefault(r => r.Id.Equals(id));
     }
 
-    public IList<Comment> GetByPostId(int id)
+    public IList<Comment> GetByPostIdWithProfile(int id)
     {
       return db.Comments.Where(r => r.PostId.Equals(id))
         .Include(r => r.Account)

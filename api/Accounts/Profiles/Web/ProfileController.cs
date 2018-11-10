@@ -36,14 +36,7 @@ namespace Api.Accounts.Profiles.Web
 
       return mapper.Map<ProfileResponse>(profile);
     }
-
-    [HttpGet(RouteUrlSelf)]
-    public ActionResult<ProfileResponse> GetSelf()
-    {
-      var accountId = Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value);
-      return GetByAccountId(accountId);
-    }
-
+    
     [HttpPost(RouteUrlId)]
     [AuthorizeRole(RoleConstants.Admin)]
     public IActionResult Add(int id, ProfileRequest profileRequest)
