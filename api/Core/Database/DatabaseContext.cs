@@ -20,12 +20,14 @@ namespace Api.Core.Database
       #region ManyToMany
 
       modelBuilder.Entity<AccountRole>().HasKey(e => new {e.AccountId, e.RoleId});
-
       modelBuilder.Entity<AccountRole>().HasOne(e => e.Account).WithMany(e => e.AccountRoles)
         .HasForeignKey(e => e.AccountId);
-
       modelBuilder.Entity<AccountRole>().HasOne(e => e.Role).WithMany(e => e.AccountRoles)
         .HasForeignKey(e => e.RoleId);
+
+      modelBuilder.Entity<AccountFollow>().HasKey(e => new {e.AccountId, e.FollowingId});
+      modelBuilder.Entity<AccountFollow>().HasOne(e => e.Account).WithMany(e => e.AccountFollows)
+        .HasForeignKey(e => e.AccountId).OnDelete(DeleteBehavior.Restrict);
 
       #endregion
     }
@@ -37,5 +39,6 @@ namespace Api.Core.Database
     public DbSet<Post> Posts { get; set; }
     public DbSet<Reaction> Reactions { get; set; }
     public DbSet<Comment> Comments { get; set; }
+    public DbSet<AccountFollow> AccountFollows { get; set; }
   }
 }

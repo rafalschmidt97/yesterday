@@ -99,7 +99,9 @@ namespace Api.Accounts
       db.Reactions.RemoveRange(reactionsToDelete);
       var commentsToDelete = db.Comments.Where(r => r.AccountId.Equals(id));
       db.Comments.RemoveRange(commentsToDelete);
-      
+      var accountFollowsToDelete = db.AccountFollows.Where(r => r.AccountId.Equals(id));
+      db.AccountFollows.RemoveRange(accountFollowsToDelete);
+       
       db.Accounts.Remove(account);
       db.SaveChanges();
 

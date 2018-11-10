@@ -18,5 +18,6 @@ namespace Api.Accounts
     public ICollection<AccountRole> AccountRoles { get; set; }
     public Profile Profile { get; set; }
     public ICollection<Post> Posts { get; set; }
+    public ICollection<AccountFollow> AccountFollows { get; set; }
   }
 }
