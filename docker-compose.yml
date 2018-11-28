@@ -1,0 +1,11 @@
+version: "3"
+services:
+  db:
+    container_name: yesterday_solo_sqlserver
+    image: "mcr.microsoft.com/mssql/server:2017-latest"
+    ports:
+      - "1434:1433"
+    environment:
+      SA_PASSWORD: "zaq1@WSX"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Express"
